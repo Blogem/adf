@@ -1,0 +1,40 @@
+{
+	"name": "pqt_co2_emission",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dls_raw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "co2_emission.parquet",
+				"fileSystem": "adf"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Entity",
+				"type": "UTF8"
+			},
+			{
+				"name": "Code",
+				"type": "UTF8"
+			},
+			{
+				"name": "Year",
+				"type": "INT32"
+			},
+			{
+				"name": "CO2",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
