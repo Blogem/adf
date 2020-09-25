@@ -29,7 +29,7 @@
 					"name": "SrtByEntity"
 				}
 			],
-			"script": "source(output(\n\t\tEntity as string,\n\t\tCode as string,\n\t\tYear as integer,\n\t\tCO2 as decimal(38,18)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~> AggCo2Emission\nAggCo2Emission aggregate(groupBy(Entity,\n\t\tCode),\n\tCO2_agg = sum(CO2)) ~> AggEmissionsPerEntity\nAggEmissionsPerEntity sort(asc(Entity, true)) ~> SrtByEntity\nSrtByEntity sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['co2_emission_agg.txt'],\n\ttruncate: true,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sink"
+			"script": "source(output(\n\t\tEntity as string,\n\t\tCode as string,\n\t\tYear as integer,\n\t\tCO2 as decimal(38,18)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~> AggCo2Emission\nAggCo2Emission aggregate(groupBy(Entity,\n\t\tCode),\n\tCO2_sum = sum(CO2),\n\t\tCO2_avg = avg(CO2)) ~> AggEmissionsPerEntity\nAggEmissionsPerEntity sort(asc(Entity, true)) ~> SrtByEntity\nSrtByEntity sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['co2_emission_agg.txt'],\n\ttruncate: true,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Sink"
 		}
 	}
 }
